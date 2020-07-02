@@ -16,6 +16,12 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
+    description: {
+      type: String,
+      required: true,
+      minLength: 10,
+      maxlength: 500,
+    },
     //what else will the user need?
   },
   {

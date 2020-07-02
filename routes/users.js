@@ -11,8 +11,8 @@ router.route("/").get((req, res) => {
 router.route("/register").post((req, res) => {
   const username = req.body.username;
   const email = req.body.email;
-  const newUser = new User({ username, email });
-
+  const description = req.body.description;
+  const newUser = new User({ username, email, description });
   newUser
     .save()
     .then(() => res.json("User added!"))
@@ -36,10 +36,11 @@ router.route("/update/:id").post((req, res) => {
     .then((user) => {
       user.username = req.body.username;
       user.email = req.body.email;
+      user.description = req.body.description;
 
       user
         .save()
-        .then(() => res.json("Exercise updated!"))
+        .then(() => res.json("user updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
     })
     .catch((err) => res.status(400).json("Error: " + err));
