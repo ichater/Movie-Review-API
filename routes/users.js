@@ -9,8 +9,8 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/register").post((req, res) => {
-  const username = req.body.username;
-  const email = req.body.email;
+  const list = req.body.list;
+  const user = req.body.email;
   const description = req.body.description;
   const newUser = new User({ username, email, description });
   newUser
