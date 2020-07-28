@@ -1,11 +1,18 @@
 const router = require("express").Router();
 let User = require("../models/user.model");
-
+let MovieList = require("../models/movielist.model");
 //How we access the user
 router.route("/").get((req, res) => {
   User.find()
     .then((users) => res.json(users))
     .catch((err) => res.status(400).json("Error: " + err));
+});
+
+// /user/movielists/id
+router.route("/movieList/:userId").get((req, res) => {
+  MovieList.find({ user: req.params.userId })
+    .then((movieList) => res.json(movieList))
+    .catch((err) => res.status(400).json("Error" + err));
 });
 
 router.route("/register").post((req, res) => {

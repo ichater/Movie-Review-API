@@ -4,6 +4,12 @@ const Schema = mongoose.Schema;
 
 const movieListSchema = new Schema(
   {
+    movieListTitle: {
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 50,
+    },
     movieList: {
       type: [
         {
@@ -19,10 +25,10 @@ const movieListSchema = new Schema(
       ref: "user",
       required: true,
     },
-  },
-  {
-    timestapms: true,
   }
+  // {
+  //   timestapms: true,
+  // }
 );
 
 const MovieList = mongoose.model("movielist", movieListSchema);

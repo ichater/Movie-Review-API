@@ -1,48 +1,38 @@
 const router = require("express").Router();
 let MovieList = require("../models/movielist.model");
 
-router.route("/:userId").get((req, res) => {
-  MovieList.find({ user: req.params.userId })
-    .then((movieList) => res.json(movieList))
-    .catch((err) => res.status(400).json("Error" + err));
-});
+// ,,,.com/users/movieLists/userId
 
 //get specific list
-router.route("/:userId/:id").get((req, res) => {
-  MovieList.findById({ "list.id": "<id>" })
+router.route("/:listId").get((req, res) => {
+  MovieList.findById(req.params.listId)
     .then((movieList) => res.json(movieList))
     .catch((err) => res.status(400).json("Error" + err));
 });
 
-// POST www.izaksapp/movielist/
 router.route("/").post((req, res) => {
-  const userId = req.body.userId;
-  const movies = req.body.movies;
-  const movieList = new MovieList({ user: userId, list: movies });
-  movieList
+  const { userId, movieList, movieListTitle } = req.body;
+  const newList = new MovieList({ userId, movieList, movieListTitle });
+  newList
     .save()
     .then(() => res.json("MovieList added!"))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/:userId/:id").put((req, res) => {
-  //find one where id === someId
-  MovieList.findOneAndUpdate(
-    {
-      id: req.params.id,
-    },
-    req.newData,
-    { upsert: true },
-    function (err, doc) {
-      if (err) return res.send(500, { error: err });
-      return res.send("Succesfully saved.");
-    }
-  );
-});
+// router.route("/:listId").put((req, res) => {
+//   // const userId = req.params.userId;
+//   const listId = req.params.listId;
+//   //find one where id === someId
+//   MovieList.findByIdAndUpdate(req.params.listId, ???);
+// });
 
-router.route("/:id").delete((req, res) => {
-  MovieList.findById(req.params.id)
-    .then((list) => list.remove().then(() => res.json({ success: true })))
+router.route("/:listId").delete((req, res) => {
+  MovieList.findById(req.params.listId)
+    .then((list) =>
+      list
+        .remove()
+        .then(() => res.json({ success: true } + "movielist deleted"))
+    )
     .catch((err) => res.status(400).json("Error" + err));
 });
 
