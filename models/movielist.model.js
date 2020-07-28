@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const movieListSchema = new Schema(
   {
-    list: {
+    movieList: {
       type: [
         {
           title: String,
