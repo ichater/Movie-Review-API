@@ -20,15 +20,15 @@ const movieListSchema = new Schema(
       minlength: 0,
       required: true,
     },
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
+  },
+  {
+    timestapms: true,
   }
-  // {
-  //   timestapms: true,
-  // }
 );
 
 const MovieList = mongoose.model("movielist", movieListSchema);

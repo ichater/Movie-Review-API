@@ -9,15 +9,15 @@ router.route("/").get((req, res) => {
 });
 
 // /user/movielists/id
-router.route("/movieList/:userId").get((req, res) => {
-  MovieList.find({ user: req.params.userId })
+router.route("/movielist/:userId").get((req, res) => {
+  MovieList.find({ userId: req.params.userId })
     .then((movieList) => res.json(movieList))
     .catch((err) => res.status(400).json("Error" + err));
 });
 
 router.route("/register").post((req, res) => {
-  const list = req.body.list;
-  const user = req.body.email;
+  const username = req.body.list;
+  const email = req.body.email;
   const description = req.body.description;
   const newUser = new User({ username, email, description });
   newUser
