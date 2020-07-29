@@ -35,27 +35,7 @@ router.route("/:listId").get((req, res) => {
 router.route("/:listId").put((req, res) => {
   const { year, title } = req.body;
   const movie = { year, title };
-  MovieList.updateOne(req.params.listId)
-    .then((movieList) =>
-      movieList
-        .update()
-        .then(() => res.json({ success: true } + "movielist updated"))
-    )
-    .catch((err) => res.status(400).json("Error" + err));
 });
-
-// router.route("/:listId").post((req, res) => {
-//   MovieList.findById(req.params.listId)
-//     .then((movieList) => {
-//       movieList.title = req.body.title;
-//       movieList.year = req.body.year;
-//       movieList
-//         .save()
-//         .then(() => res.json("movie list updated!"))
-//         .catch((err) => res.status(400).json("Error: " + err));
-//     })
-//     .catch((err) => res.status(400).json("Error: " + err));
-// });
 
 router.route("/:listId").delete((req, res) => {
   MovieList.findById(req.params.listId)

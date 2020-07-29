@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const methodOverRide = require("method-override");
 
 require("dotenv").config();
 
@@ -8,7 +9,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+// used to be 'body parser
 app.use(express.json());
+app.use(methodOverRide("_method"));
 
 //Routes below connected via files
 const usersRouter = require("./routes/users");
