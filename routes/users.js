@@ -1,16 +1,17 @@
 const router = require("express").Router();
-const { check, validationResult } = require("express-validator/check");
+const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 let User = require("../models/user.model");
 let MovieList = require("../models/movielist.model");
-//How we access the user
+// const config = require("../config/default.json");
+
 router.route("/").get((req, res) => {
   User.find()
     .then((users) => res.json(users))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-// /user/movielists/id
 router.route("/movielist/:userId").get((req, res) => {
   MovieList.find({ userId: req.params.userId })
     .then((movieList) => res.json(movieList))
@@ -30,12 +31,12 @@ router
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        console.log(errors + "hello world");
+        console.log(errors);
         return res.status(400).json(errors);
       }
 
       const { description, email, password, username } = req.body;
-      // const newUser = new User({ username, email, description, password });
+
       try {
         let user = await User.findOne({ email });
         if (user) {
@@ -50,30 +51,36 @@ router
 
         await user.save();
 
-        res.send("User Registered");
+        const payload = {
+          user: {
+            id: user.id,
+          },
+        };
+        const secretToken = "placeholderSecretToken";
+
+        jwt.sign(payload, secretToken, { expiresIn: 36000 }, (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        });
       } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
       }
-      // newUser
-      //   .save()
-      //   .then(() => res.json("User added!"))
-      //   .catch((err) => res.status(400).json("Error" + err));
-      // res.send("success");
     }
   );
 
-router.route("/:id").get((req, res) => {
-  User.findById(req.params.id)
-    .then((user) => res.json(user))
-    .catch((err) => res.status(400).json("Error" + err));
-});
-
-router.route("/:id").delete((req, res) => {
-  User.findByIdAndDelete(req.params.id)
-    .then(() => res.json("user deleted"))
-    .catch((err) => res.status(400).json("Error" + err));
-});
+router
+  .route("/:id")
+  .get((req, res) => {
+    User.findById(req.params.id)
+      .then((user) => res.json(user))
+      .catch((err) => res.status(400).json("Error" + err));
+  })
+  .delete((req, res) => {
+    User.findByIdAndDelete(req.params.id)
+      .then(() => res.json("user deleted"))
+      .catch((err) => res.status(400).json("Error" + err));
+  });
 
 router.route("/update/:id").post((req, res) => {
   User.findById(req.params.id)
