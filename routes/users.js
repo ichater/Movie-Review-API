@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 let User = require("../models/user.model");
 let MovieList = require("../models/movielist.model");
-// const config = require("../config/default.json");
+const config = require("config");
 
 router.route("/").get((req, res) => {
   User.find()
@@ -56,12 +56,17 @@ router
             id: user.id,
           },
         };
-        const secretToken = "placeholderSecretToken";
+        // const secretToken = "placeholderSecretToken";
 
-        jwt.sign(payload, secretToken, { expiresIn: 36000 }, (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        });
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 36000 },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+          }
+        );
       } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");

@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const methodOverRide = require("method-override");
+const connectDB = require("./config/dbs");
 
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+connectDB();
 
 app.use(cors());
 // used to be 'body parser
@@ -20,16 +23,19 @@ app.use("/users", usersRouter);
 const movieListRouter = require("./routes/movieList");
 app.use("/movielist", movieListRouter);
 
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+const authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
+
+// const uri = process.env.ATLAS_URI;
+// mongoose.connect(uri, {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+//   useUnifiedTopology: true,
+// });
+// const connection = mongoose.connection;
+// connection.once("open", () => {
+//   console.log("MongoDB database connection established successfully");
+// });
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
