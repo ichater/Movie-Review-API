@@ -1,4 +1,4 @@
 {
-  "mongoURI": "ATLAS_URI=mongodb+srv://endnow:Sophitia123@cluster0-qcjpz.mongodb.net/test?retryWrites=true&w=majority",
+  "mongoURI": "mongodb+srv://endnow:Sophitia123@cluster0-qcjpz.mongodb.net/test?retryWrites=true&w=majority",
   "jwtSecret": "placeholderSecretToken"
 }
