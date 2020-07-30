@@ -22,6 +22,11 @@ const userSchema = new Schema(
       minLength: 10,
       maxlength: 500,
     },
+    password: {
+      type: String,
+      minLength: 6,
+      required: true,
+    },
     //what else will the user need?
   },
   {
