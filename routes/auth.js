@@ -16,6 +16,8 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.get("/test", (req, res) => res.send("test working"));
+
 // Authenticate user & get token
 // Public
 router

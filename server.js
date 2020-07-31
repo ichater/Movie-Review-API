@@ -26,16 +26,10 @@ app.use("/movielist", movieListRouter);
 const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
-// const uri = process.env.ATLAS_URI;
-// mongoose.connect(uri, {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   useUnifiedTopology: true,
-// });
-// const connection = mongoose.connection;
-// connection.once("open", () => {
-//   console.log("MongoDB database connection established successfully");
-// });
+const profileRouter = require("./routes/profile");
+app.use("/profile", profileRouter);
+
+// app.use("/profile", require("./routes/profile"));
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
