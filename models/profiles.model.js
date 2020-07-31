@@ -10,6 +10,7 @@ const profilesScheme = new mongoose.Schema({
   description: {
     type: String,
     minlength: 50,
+    required: true,
   },
   filmQuotes: {
     type: [String],
