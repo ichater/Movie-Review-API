@@ -25,7 +25,6 @@ router
       check("username", "username is required").not().isEmpty(),
       check("password", "password is required").not().isEmpty(),
       check("email", "please include an email").isEmail(),
-      check("description", "Tell us who you are now!").not().isEmpty(),
     ],
     async (req, res) => {
       const errors = validationResult(req);

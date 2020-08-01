@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
+const { check, validationResult } = require("express-validator");
+
 const Profile = require("../models/profiles.model");
 const User = require("../models/user.model");
-const { check, validationResult } = require("express-validator");
 
 //get profile/me
 router.route("/me").get(auth, async (req, res) => {
@@ -47,9 +48,46 @@ router.route("/").post(
         .map((quote) => quote.trim());
     }
     if (likesAboutMovies) profileFields.likesAboutMovies = likesAboutMovies;
-    console.log(profileFields.filmQuotes);
-    res.send("working");
+
+    try {
+      let profile = await Profile.findOneAndUpdate({ user: req.user.id });
+      if (profile) {
+        //Update
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+
+        console.log(profile);
+        return res.json(profile);
+      }
+
+      //Create
+      profile = new Profile(profileFields);
+      await profile.save();
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(400).send("Server Error");
+    }
   }
 );
+
+router.route("/user/:id").get(async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.id,
+    }).populate("user", ["username"]);
+
+    if (!profile)
+      return res.status(400).json({ msg: "There is no profile for this user" });
+
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("server error");
+  }
+});
 
 module.exports = router;
