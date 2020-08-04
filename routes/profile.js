@@ -183,11 +183,7 @@ router.delete("/moviequotes/:quote_id", auth, async (req, res) => {
       .map((item) => item.id)
       .indexOf(req.params.quote_id);
 
-    console.log(removeIndex);
-
     profile.filmQuotes.splice(removeIndex, 1);
-
-    console.log(profile.filmQuotes.splice(removeIndex, 1));
 
     await profile.save();
 
