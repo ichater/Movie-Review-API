@@ -4,9 +4,6 @@ const { check, validationResult } = require("express-validator");
 
 const Profile = require("../models/profiles.model");
 const User = require("../models/user.model");
-const { restart } = require("nodemon");
-const { response } = require("express");
-const { unsubscribe } = require("./users");
 
 //get profile/me
 router.route("/me").get(auth, async (req, res) => {
@@ -159,10 +156,8 @@ router.put(
     const newMovieQUote = { film, quote };
 
     try {
-      console.log("Hellooow");
       const profile = await Profile.findOne({ user: req.user.id });
-      console.log(profile);
-      console.log(newMovieQUote);
+
       profile.filmQuotes.push(newMovieQUote);
 
       await profile.save();
@@ -174,5 +169,33 @@ router.put(
     }
   }
 );
+
+// Delete movie quote from profile
+// Private
+router.delete("/moviequotes/:quote_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    console.log(
+      profile.filmQuotes.map((item) => item.id).indexOf(req.params.quote_id)
+    );
+    // get remove index
+    const removeIndex = profile.filmQuotes
+      .map((item) => item.id)
+      .indexOf(req.params.quote_id);
+
+    console.log(removeIndex);
+
+    profile.filmQuotes.splice(removeIndex, 1);
+
+    console.log(profile.filmQuotes.splice(removeIndex, 1));
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
