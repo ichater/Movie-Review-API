@@ -6,6 +6,7 @@ let User = require("../models/user.model");
 let MovieList = require("../models/movielist.model");
 const config = require("config");
 
+//GET all users
 router.route("/").get((req, res) => {
   User.find()
     .then((users) => res.json(users))
@@ -60,7 +61,7 @@ router
         jwt.sign(
           payload,
           config.get("jwtSecret"),
-          { expiresIn: 36000 },
+          { expiresIn: 3600000 },
           (err, token) => {
             if (err) throw err;
             res.json({ token });

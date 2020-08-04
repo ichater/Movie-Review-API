@@ -13,12 +13,20 @@ const profilesScheme = new mongoose.Schema({
     minlength: 50,
     required: true,
   },
-  filmQuotes: {
-    type: [String],
-  },
+  filmQuotes: [
+    {
+      quote: {
+        type: String,
+        required: true,
+      },
+      film: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   likesAboutMovies: {
     type: String,
-    minlength: 50,
   },
 });
 
