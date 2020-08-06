@@ -29,6 +29,9 @@ app.use("/auth", authRouter);
 const profileRouter = require("./routes/profile");
 app.use("/profile", profileRouter);
 
+const postRouter = require("./routes/posts");
+app.use("/posts", postRouter);
+
 // app.use("/profile", require("./routes/profile"));
 
 app.listen(port, () => {
