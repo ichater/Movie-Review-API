@@ -19,6 +19,7 @@ router.route("/movielist/:userId").get((req, res) => {
     .catch((err) => res.status(400).json("Error" + err));
 });
 
+// users/register
 router
   .route("/register")
   .post(

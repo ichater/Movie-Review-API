@@ -48,37 +48,12 @@ router.route("/").post(
       // .map((quote) => quote.trim());
     }
     if (likesAboutMovies) profileFields.likesAboutMovies = likesAboutMovies;
-
-    // try {
-    //   let profile = await Profile.findOneAndUpdate({ user: req.user.id });
-    //   if (profile) {
-    //     //Update
-    //     profile = await Profile.findOneAndUpdate(
-    //       { user: req.user.id },
-    //       { $set: profileFields },
-    //       { new: true }
-    //     );
-
-    //     // { new: true, upsert: true }
-    //     console.log(profile);
-    //     return res.json(profile);
-    //   }
-
-    //   //Create
-    //   profile = new Profile(profileFields);
-    //   await profile.save();
-    //   res.json(profile);
-    // } catch (err) {
-    //   console.error(err.message);
-    //   res.status(400).send("Server Error");
-    // }
-
     try {
       // Using upsert option (creates new doc if no match is found):
       let profile = await Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: profileFields },
-        { new: true, upsert: true }
+        { new: true, upsert: true, runValidators: true }
       );
       res.json(profile);
     } catch (err) {
@@ -157,7 +132,7 @@ router.put(
 
     try {
       const profile = await Profile.findOne({ user: req.user.id });
-
+      console.log(profile.filmQuotes);
       profile.filmQuotes.push(newMovieQUote);
 
       await profile.save();
