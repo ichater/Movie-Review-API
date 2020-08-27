@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 let User = require("../models/user.model");
 let MovieList = require("../models/movielist.model");
 const config = require("config");
+const gravatar = require("gravatar");
 
 //GET all users
 router.route("/").get((req, res) => {
@@ -43,7 +44,17 @@ router
         if (user) {
           res.status(400).json({ errors: [{ msg: "User already exists" }] });
         }
-        user = new User({ username, email, description, password });
+
+        const avatar = normalize(
+          gravatar.url(email, {
+            s: "200",
+            r: "pg",
+            d: "mm",
+          }),
+          { forceHttps: true }
+        );
+
+        user = new User({ username, email, description, password, avatar });
 
         //Encrypt password
         const salt = await bcrypt.genSalt(10);
