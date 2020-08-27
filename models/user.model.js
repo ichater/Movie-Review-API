@@ -22,6 +22,10 @@ const userSchema = new Schema(
       minLength: 6,
       required: true,
     },
+
+    avatar: {
+      type: String,
+    },
     //what else will the user need?
   },
   {

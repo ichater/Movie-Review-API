@@ -10,7 +10,7 @@ router.route("/me").get(auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
-    }).populate("user", ["username"]);
+    }).populate("user", ["username", "avatar"]);
 
     if (!profile) {
       return res.status(400).json({ msg: "there is no profile for this user" });
@@ -66,7 +66,10 @@ router.route("/").post(
 // Get All Profiles
 router.route("/").get(async (req, res) => {
   try {
-    const profiles = await Profile.find().populate("user", ["username"]);
+    const profiles = await Profile.find().populate("user", [
+      "username",
+      "avatar",
+    ]);
     res.json(profiles);
   } catch (err) {
     console.error(err.message);
@@ -79,7 +82,7 @@ router.route("/user/:id").get(async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.id,
-    }).populate("user", ["username"]);
+    }).populate("user", ["username", "avatar"]);
 
     if (!profile) return res.status(400).json({ msg: "Profile not found" });
 
@@ -116,17 +119,7 @@ router.put(
   // [
   auth,
 
-  //   [
-  //     check("film", "film is required").not().isEmpty,
-  //     check("quote", "movie quote is required").not().isEmpty,
-  //   ],
-  // ],
   async (req, res) => {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
-
     const { film, quote } = req.body;
     const newMovieQUote = { film, quote };
 
