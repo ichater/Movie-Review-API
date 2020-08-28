@@ -28,6 +28,10 @@ const profilesScheme = new mongoose.Schema({
   likesAboutMovies: {
     type: String,
   },
+
+  avatar: {
+    type: String,
+  },
 });
 
 const Profile = mongoose.model("profile", profilesScheme);
