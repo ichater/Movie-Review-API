@@ -31,6 +31,7 @@ const profilesScheme = new mongoose.Schema({
 
   avatar: {
     type: String,
+    required: false,
   },
 });
 

@@ -36,7 +36,13 @@ router.route("/").post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { location, description, filmQuotes, likesAboutMovies } = req.body;
+    const {
+      location,
+      description,
+      filmQuotes,
+      likesAboutMovies,
+      avatar,
+    } = req.body;
     //build profile object
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -48,6 +54,8 @@ router.route("/").post(
       // .map((quote) => quote.trim());
     }
     if (likesAboutMovies) profileFields.likesAboutMovies = likesAboutMovies;
+
+    if (avatar) profileFields.avatar = avatar;
     try {
       // Using upsert option (creates new doc if no match is found):
       let profile = await Profile.findOneAndUpdate(

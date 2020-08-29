@@ -23,9 +23,6 @@ const userSchema = new Schema(
       required: true,
     },
 
-    avatar: {
-      type: String,
-    },
     //what else will the user need?
   },
   {
