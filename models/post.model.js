@@ -12,6 +12,10 @@ const postSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  avatar: {
+    type: String,
+    required: false,
+  },
   likes: [
     {
       user: {
