@@ -212,8 +212,6 @@ router.route("/comment/:id/:comment_id").delete(auth, async (req, res) => {
       .map((comment) => comment.user.toString())
       .indexOf(req.user.id);
 
-    console.log(post);
-
     post.comments.splice(removeIndex, 1);
 
     await post.save();
